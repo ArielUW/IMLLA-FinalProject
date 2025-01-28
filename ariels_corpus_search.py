@@ -3,7 +3,7 @@ import sqlite3 as sql
 import re
 
 def split_into_sentences(text: str) -> list[str]:
-    # source: https://stackoverflow.com/questions/4576077/how-can-i-split-a-text-into-sentences –> modified for Polish
+    """ source: https://stackoverflow.com/questions/4576077/how-can-i-split-a-text-into-sentences –> quickly modified for Polish, the results are not great, but still better than the original corpus"""
     """
     Split the text into sentences.
 
@@ -72,10 +72,13 @@ def create_csv(file):
     print(df.head)
     df.to_csv("raw_sentences.csv")
 
+def extract_patterns(input, pattern, output):
+    df = pd.read_csv(input)
+    df[df.sentence.str.contains(pattern)].to_csv(output)
+
 if __name__=="__main__":
     #create_csv("corpus.json") #it was done earlier, so it's commented
-    df = pd.read_csv("raw_sentences.csv")
-    patterns = ["(gra|filozo)f(ka)?[\s|.|,|?|!]", "(l|g)o(g|(żka))?[\s|.|,|?|!]", "yw(ka)?[\s|.|,|?|!]", "onom(ka)?[\s|.|,|?|!]", "mistrz(yni)?[\s|.|,|?|!]", "sędzi(a|(ni)|(ina))[\s|.|,|?|!]", "cieśla[\s|.|,|?|!]", "(a|e)trk?a[\s|.|,|?|!]", "opedk?a[\s|.|,|?|!]", "(((a|e)u)|e|i|(on))tk?a[\s|.|,|?|!]"] #regexes for various groups
+    patterns = ["ystk?a[\s|.|,|?|!]", "(l|g)o(g|(żka))[\s|.|,|?|!]", "((o|e|a)w)|(el)|(ad)c(a|zyni)[\s|.|,|?|!]"] #first iteration: ["(gra|filozo)f(ka)?[\s|.|,|?|!]", "(l|g)o(g|(żka))?[\s|.|,|?|!]" – this one was wrong: unnecessary "?", "yw(ka)?[\s|.|,|?|!]", "onom(ka)?[\s|.|,|?|!]", "mistrz(yni)?[\s|.|,|?|!]", "sędzi(a|(ni)|(ina))[\s|.|,|?|!]", "cieśla[\s|.|,|?|!]", "(a|e)trk?a[\s|.|,|?|!]", "opedk?a[\s|.|,|?|!]", "(((a|e)u)|e|i|(on))tk?a[\s|.|,|?|!]" – this one backfired because of "kobieta" and "aut(k)a"]
     for i, pattern in enumerate(patterns):
         print(pattern)
-        df[df.sentence.str.contains(pattern)].to_csv(f"sentences_{i}.csv")
+        extract_patterns("raw_sentences.csv", pattern, f"sentences_{i+10}.csv")
