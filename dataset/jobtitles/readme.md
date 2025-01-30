@@ -6,6 +6,10 @@ separated by commas.
 
 There are 2 distinct example types (1 and 0) which are described below.
 
+All of the examples have been shuffled at two distinct stages:
+* after all the examples have been sorted by type, but before the splitting (to ensure random distribution of differnet sources over each split),
+* after the data was split (to ensure random order of 0s and 1s witin each split).
+
 ### Type 1
 
 Those are the sentences that contain nouns designating job titles. In the [source_sentence] column, the job title is gendered. In the [target_sencence] column, the gendered job title has been replaced with so-called "personative" (see below).
@@ -39,13 +43,15 @@ The dataset is split into 3 parts of the following amount of sentences:
 
 split           |  type 1 |  type 0 |  TOTAL  
 ---------------------------------------------
-train.csv       |     610 |         | 
+train.csv       |     610 |    4221 |   4831
 validation.csv  |      50 |     500 |    250
 test.csv        |     250 |     250 |    500
+---------------------------------------------
+TOTAL           |     910 |    4971 |   5881
 
 ## Sources
 
-Type 1 example are found in the NKJP corpus or with targeted searches in Google. Some sentences have been altered so that better meet the criteria.
+Type 1 examples come from the _NKJP corpus_ enriched with a small amount targeted searches in _Google_. Some sentences have been altered so that better meet the criteria.
 
 ### Splitting source texts into sentences
 
