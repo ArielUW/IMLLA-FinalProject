@@ -22,6 +22,15 @@ Full description of the project is available on Google Docs: https://docs.google
 Note: instead of using [edit_distance()] from NLTK library, [distance()] from Levenshtein library was used.
 Both values are below the assumed maximum thershold value.
 
+### Qualitative analysis
+
+*U młodej dziewczyny osoba zajmująca się psychiatrią rozpoznała początki choroby psychicznej, dziewczyna myśli o samobójstwie.* ▶️ *U młodej dziewczyny osoba psychiaterska rozpoznała początki choroby psychicznej, dziewczyna myśli o samobójstwie.*
+
+A lot of model's mistakes were related to case agreement and other morphosyntactical aspects beyond the scope of the project, eg:
+– object-verb agreement: *Na razie jedynie weto Kwaśniewskiego może powstrzymać _pazerne osoby awuesiarskie_, którzy mnożąc urzędy rozbudowują dla siebie przechowalnię.* ▶️ *Na razie jedynie weto Kwaśniewskiego może powstrzymać _pazernych osób awuesiarskich_, którzy mnożąc urzędy rozbudowują dla siebie przechowalnię.*
+– issues related to numerals: *_Cztery młode osoby żołnierskie_ w granatowych mundurach MSW mocno _zapukały_ do drzwi.* ▶️ *_Czterech młodych osób żołnierskich_ w granatowych mundurach MSW mocno _zapukało_ do drzwi.*
+– subject-verb agreement: *Do pracy naukowej _wróciła_ również niedawna osoba liderska UP, RYSZARD BUGAJ.* ▶️ *Do pracy naukowej _wrócił_ również niedawna osoba liderska UP, RYSZARD BUGAJ.*
+
 ## Errors and shortcomings
 1. Despite our best efforts, there were mistakes in the dataset: the reason for that is the fact that we didn't have enough resources to provide any proofreading. Standard practice would be to have at least two annotators and one superannnotator – in our case, every example was prepared by one annotator without proofreading.
 * First, errors present in the training/validation splits may have contributed to worse-than-possible training results (model could come to "wrong conclusions" based on erroneous examples in training),
@@ -29,3 +38,12 @@ Both values are below the assumed maximum thershold value.
 * However, the number of errors is not too big and can be easily remediated by having even one round of proofreading. Proofreading has not been performed before submitting this project, as at this state it would equate to falsifying documentation.
 2. The dataset was not balanced the way it was intended to be (in terms of morphological variety of job titles), nor was it as homogenous as intended (there were semantic edge cases present, as well as a variety of cases instead of just singular nominative forms).
 * This has made the task all the more complicated for the model, as there are more parameters influencing the quality of the output, such as possible mistakes concetning case endings, number agreement, recognizing edge cases etc.
+
+## Conclusions
+
+The results are very promising and much better than expected. The high quality of the initial outputs is especially surprising given the errors present in the dataset.
+
+It is advisable to proofread the existing dataset [ArielUW/jobtitles], as well as to expand it with more examples tailored to adress:
+– the most problematic morphological types of job titles
+– morphosyntactic inticacies of subject-verb agreement, case and number agreement and co-reference.
+After that the training process should be repeated for the base model, as the here presented fine-tuning was interfered with by the existence of errors in the dataset.
