@@ -20,9 +20,9 @@ Full description of the project is available on Google Docs: https://docs.google
 ## Evaluation of the model
 
 ### Metrics:
-– Attempted noun neutralisation precision: [0.983]
-– Attempted noun neutralisation recall: [0.472]
-Precision is above the assumed minimum threshhold value (50%). However, the recall value is not.
+– Attempted noun neutralisation precision: [1]
+– Attempted noun neutralisation recall: [0.892]
+Both values are above the assumed threshold value (0.5).
 
 – Normalized Levensthein's distance for type 1: [0.0395]
 – Normalized Levensthein's distance for type 0: [0.0001]
@@ -38,9 +38,9 @@ Given that it is unclear whether *autor* should be treated as a profession or no
 * 133 out of 250 (53%) type 1 targets were non-identical to the gold-standard counterparts.
 However, many of the non-identical tagets still contained valid attempts and neutralisation (as evidenced by high precision and the qualitative analysis). Oftentimes the differences were minor (as evidenced by low mean standardized Levensthein distances) and/or beyond the scope of the main interest of the study (as evidenced by high precision), or even fully attributable to mistakes in the dataset (as laid out in the qualitative analysis).
 
-* The extremely high precision value (98.3%) is explained by the fact that our model did not attempt to rephrase type 0 sentences (i.e., the ones that did not contain human-related or job-related terms).
+* The perfect precision value (100%) is explained by the fact that our model did not attempt to rephrase type 0 sentences (i.e., the ones that did not contain human-related or job-related terms). It might also be explained by the relatively low diversity of the dataset – with more varied inputs, it remains to be seen if it would continue performing perfectly. 
 
-* However, the relatively low recall value (47.2%) means that many of the job titles were not changed to their personative equivalent. It can be hypothesised that the model performed best with higher-frequency job titles and more regular adjectives (i.e. the terms where the personative adjective is a common adjective describing the profession, e.g. żołnierz > osoba żołnierska). However, it did not generalize well to previously unseen or rare items. It is likely that performance could be improved with a larger and more varied dataset, with a larger representation of diverse low-frequency job titles.
+* The very high recall value (89.2%) means that the model performed well in terms of identifying the items requiring change. However, this measure does not take into account whether the solution was well done – just that an attempt was made. It can be hypothesised that the model performed best with higher-frequency job titles and more regular adjectives (i.e. the terms where the personative adjective is a common adjective describing the profession, e.g. żołnierz > osoba żołnierska). However, with previously unseen or rare items, it typically identified the spot where changes were needed, but it was not always successful at coming up with a plausible solution. It is likely that performance could be improved with a larger and more varied dataset, with a larger representation of diverse low-frequency job titles, and also a larger representation of feminine job titles, as these tended to be the 'no attempt made' rows.
 
 ### Qualitative analysis of errors in type 1 examples
 
@@ -63,33 +63,33 @@ Examples are presentend in the following order: *target prepared by annotators* 
 – mleczarz: *W 2000 roku sejneńskie _osoby mleczarskie_ skupiły ponad 23 mln litrów surowca.* ▶️ *W 2000 roku sejneńscy _mleczarze_ skupili ponad 23 mln litrów surowca.*
 – ślusarz: *Prosty chłopak, z zawodu _osoba ślusarska_, a proszę, do czego doszedł: dwa domy, kilka samochodów, duże pieniądze.* ▶️ *Prosty chłopak, z zawodu _ślusarz_, a proszę, do czego doszedł: dwa domy, kilka samochodów, duże pieniądze.*
 – poseł (multiple changes in one sentence): *_Osoba poselska_ od 1997 r. Andrzej Markowiak - 54 l., osoba inżynierska mechanicza.","_Poseł_ od 1997 r. Andrzej Markowiak - 54 l., osoba inżynierska mechaniczna.*
-– cukiernik: *Jako ceniona _osoba cukeirnicza_ trafił od razu do jednego z pięciogwiazdkowych hoteli w stolicy kraju, Seulu.* ▶️ *Jako ceniony _cukiernik_ trafił od razu do jednego z pięciogwiazdkowych hoteli w stolicy kraju, Seulu.*
+– cukiernik: *Jako ceniona _osoba cukiernicza_ trafił od razu do jednego z pięciogwiazdkowych hoteli w stolicy kraju, Seulu.* ▶️ *Jako ceniony _cukiernik_ trafił od razu do jednego z pięciogwiazdkowych hoteli w stolicy kraju, Seulu.*
 
-3. A lot of model's mistakes were related to case agreement and other morphosyntactical aspects that were deemed beyond the scope of the project, but had to be included in the target sentences nevertheless, eg:
+3. A lot of model's mistakes were related to case agreement and other morphosyntactical aspects that were deemed beyond the scope of the project, but had to be included in the target sentences nevertheless, e.g.:
 – subject-verb agreement: *Do pracy naukowej _wróciła_ również niedawna osoba liderska UP, RYSZARD BUGAJ.* ▶️ *Do pracy naukowej _wrócił_ również niedawna osoba liderska UP, RYSZARD BUGAJ.* (prevalent group of morphosyntactic errors, additional examples: 5)
 – object-verb agreement: *Na razie jedynie weto Kwaśniewskiego może powstrzymać _pazerne osoby awuesiarskie_, którzy mnożąc urzędy rozbudowują dla siebie przechowalnię.* ▶️ *Na razie jedynie weto Kwaśniewskiego może powstrzymać _pazernych osób awuesiarskich_, którzy mnożąc urzędy rozbudowują dla siebie przechowalnię.*
 – attribute-noun agreement: *– bo on chyba _jakąś_ osobą dyrektorską przecież został nie?* ▶️ *– bo on chyba _jakimś_ osobą dyrektorską przecież został nie?*
 – word order: *Ta wizja macierzyństwa spotkała się z polemiką ze strony _pacyfistycznej i feministycznej osoby działaczej_ Madeleine Vernet (1878-1949).* ▶️ *Ta wizja macierzyństwa spotkała się z polemiką ze strony _osoby działaczej pacyfistycznej i feministycznej_ Madeleine Vernet (1878-1949).*
-– some issue related to numerals (most likely: different behaviour of masculine vs feminine nouns for cardinals 2-4 in nominative case, but also possibly: morphosyntactic difference between cardinals expressing the value of 2-4 and >4 ): *_Cztery młode osoby żołnierskie_ w granatowych mundurach MSW mocno _zapukały_ do drzwi.* ▶️ *_Czterech młodych osób żołnierskich_ w granatowych mundurach MSW mocno _zapukało_ do drzwi.*
+– some issues related to numerals (most likely: different behaviour of masculine vs. feminine nouns for cardinal numeral 2-4 in nominative case, but also possibly: morphosyntactic differences between cardinal numerals expressing the value of 2-4 and >4 ): *_Cztery młode osoby żołnierskie_ w granatowych mundurach MSW mocno _zapukały_ do drzwi.* ▶️ *_Czterech młodych osób żołnierskich_ w granatowych mundurach MSW mocno _zapukało_ do drzwi.*
 – issues related to more complex isuess with abstract reasoning, such as the total number of people in the sentence: *Załogę samolotu stanowią _dwie osoby pilockie i osoba inżynierska pokładowa_ oraz sześć osób obsługi pokładowej.* ▶️ *Załogę samolotu stanowi dwie _osoby pilotackie i inżynierskie pokładowe_ oraz sześć osób obsługi pokładowej.*
 
 4. Some changes were made in fact correctly, but they were beyond the scope of what was expected from the model, or the model invented a different valid form than the one provided in the set:
 – czytelnik (correct form, but with object-verb agreement error): *Rozwiązując swoją drugą zagadkę kryminalną, młoda osoba detektywistyczna po raz kolejny zabiera _młodych czytelników_ w pasjonującą podróż po barwnym świecie opactwa benedyktyńskiego* ▶️ *Rozwiązując swoją drugą zagadkę kryminalną, młoda osoba detektywistyczna po raz kolejny zabiera _młodych osób czytelniczych_ w pasjonującą podróż po barwnym świecie opactwa benedyktyńskiego"*
-– pilegrzymi (correct alternative version): *Za chwilę zgłosiła się ta sama osoba pracująca w recepcji i bez wstępów, widocznie konsultowała rzecz z siostrą, powiedziała: - Łączę z działem obsługi _osób pielgrzymujących_.* ▶️ *Za chwilę zgłosiła się ta sama osoba pracująca w recepcji i bez wstępów, widocznie konsultowała rzecz z siostrą, powiedziała: - Łączę z działem obsługi _osób pielgrzymskich_.*
+– pielgrzymi (correct alternative version): *Za chwilę zgłosiła się ta sama osoba pracująca w recepcji i bez wstępów, widocznie konsultowała rzecz z siostrą, powiedziała: - Łączę z działem obsługi _osób pielgrzymujących_.* ▶️ *Za chwilę zgłosiła się ta sama osoba pracująca w recepcji i bez wstępów, widocznie konsultowała rzecz z siostrą, powiedziała: - Łączę z działem obsługi _osób pielgrzymskich_.*
 – szef (correct alternative version): *Informację tygodnika ""Capital"", iż komisja śledcza Bundestagu ds. afery finansowej CDU zbada zarzuty przeciwko Siemensowi i b. osobie kanclerskiej, potwierdziła wczoraj _osoba szefująca_ komisji Volker Neumann.* ▶️ *Informację tygodnika ""Capital"", iż komisja śledcza Bundestagu ds. afery finansowej CDU zbada zarzuty przeciwko Siemensowi i b. osobie kanclerskiej, potwierdziła wczoraj _osoba szefowska_ komisji Volker Neumann.*
-– fotograf (model's proposition is somewhat acceptable): *Pewnego dnia _osoba zajmująca się fotografią_ odkryje prawdę i będzie musiała zdecydować: czy kocha miłą powierzchowność Noelle czy fascynującą osobowość, ale i niezbyt kształtną figurę Abby.* ▶️ *Pewnego dnia _osoba fotografska_ odkryje prawdę i będzie musiał zdecydować: czy kocha miłą powierzchowność Noelle czy fascynującą osobowość, ale i niezbyt kształtną figurę Abby.*
+– fotograf (model's solution is not a perfect solution, but acceptable): *Pewnego dnia _osoba zajmująca się fotografią_ odkryje prawdę i będzie musiała zdecydować: czy kocha miłą powierzchowność Noelle czy fascynującą osobowość, ale i niezbyt kształtną figurę Abby.* ▶️ *Pewnego dnia _osoba fotografska_ odkryje prawdę i będzie musiał zdecydować: czy kocha miłą powierzchowność Noelle czy fascynującą osobowość, ale i niezbyt kształtną figurę Abby.*
 
 5. Other differences are related to technical mistakes in the dataset:
-– missing annotation of the second job title: *Ponownie zabrakło punktów osoby juniorskiej - powiedział _opiekun Płomienia_, Franciszek Hylla.* ▶️ *Ponownie zabrakło punktów osoby juniorskiej - powiedziała _osoba opiekująca się Płomienia_, Franciszek Hylla.*
-– missing annotation of the second job title: *Straciła zezwolenie i została oskarżona. 72-letnia osoba farmaceucka sprzedawała więcej niż jej _pracownicy_.,Straciła zezwolenie i została oskarżona. 72-letnia osoba farmaceucka sprzedawała więcej niż jej _osoby pracownicze_.*
-– grammaticar error of the annotator: *Osoby lekarskie i pielęgniarskie o oczach czerwonych od niewyspania _słaniali_ się na nogach ze zmęczenia, samoloty dowoziły szczepionkę z różnych końców świata: epidemia była przecież wtedy zaskoczeniem.* ▶️ *Osoby lekarskie i pielęgniarskie o oczach czerwonych od niewyspania _słaniły_ się na nogach ze zmęczenia, samoloty dowoziły szczepionkę z różnych końców świata: epidemia przecież była wtedy zaskoczeniem.*
-– grammaticar error of the annotator: *W takiej sytuacji decyzję podejmuje sama osoba podatnicza, _który_ samodzielnie wypełnia roczne zeznanie podatkowe i nie musi przy tym pytać osób urzędniczych o zdanie.* ▶️ *W takiej sytuacji decyzję podejmuje sama osoba podatnicza, _która_ samodzielnie wypełnia roczne zeznanie podatkowe i nie musi przy tym pytać osób urzędniczych o zdanie.*
-– grammaticar error of the annotator: *Osoba naczelnicza ulicznych osób rzeźniczych _wykrzywił_ twarz.* ▶️ *Osoba Naczelnicza ulicznych osób rzeźniczych _wykrzywiła_ twarz.*
-– spelling error of the annotator: *Jaka jest pewność, że Pismo Święte po wielu tłumaczeniach oddaje wiernie to, co osoby autorskie _mialy_ na myśli...* ▶️ *Jaka jest pewność, że Pismo Święte po wielu tłumaczeniach oddaje wiernie to, co osoby autorskie _miały_ na myśli...*
+– missing annotation of the second job title (the model's solution is better than the 'gold standard'): *Ponownie zabrakło punktów osoby juniorskiej - powiedział _opiekun Płomienia_, Franciszek Hylla.* ▶️ *Ponownie zabrakło punktów osoby juniorskiej - powiedziała _osoba opiekująca się Płomienia_, Franciszek Hylla.*
+– missing annotation of the second job title (the model's solution is better than the 'gold standard'): *Straciła zezwolenie i została oskarżona. 72-letnia osoba farmaceucka sprzedawała więcej niż jej _pracownicy_.* ▶️ *Straciła zezwolenie i została oskarżona. 72-letnia osoba farmaceucka sprzedawała więcej niż jej _osoby pracownicze_.*
+– grammaticar error of the annotator (the model's solution is still not correct, but the 'gold standard' is also wrong): *Osoby lekarskie i pielęgniarskie o oczach czerwonych od niewyspania _słaniali_ się na nogach ze zmęczenia, samoloty dowoziły szczepionkę z różnych końców świata: epidemia była przecież wtedy zaskoczeniem.* ▶️ *Osoby lekarskie i pielęgniarskie o oczach czerwonych od niewyspania _słaniły_ się na nogach ze zmęczenia, samoloty dowoziły szczepionkę z różnych końców świata: epidemia przecież była wtedy zaskoczeniem.*
+– grammaticar error of the annotator (the model's solution is better than the 'gold standard'): *W takiej sytuacji decyzję podejmuje sama osoba podatnicza, _który_ samodzielnie wypełnia roczne zeznanie podatkowe i nie musi przy tym pytać osób urzędniczych o zdanie.* ▶️ *W takiej sytuacji decyzję podejmuje sama osoba podatnicza, _która_ samodzielnie wypełnia roczne zeznanie podatkowe i nie musi przy tym pytać osób urzędniczych o zdanie.*
+– grammaticar error of the annotator (the model's solution is better than the 'gold standard'. Moreover, there is a capitalization inconsistency that has not been discussed by the annotators and has lead to unexpected variability): *Osoba naczelnicza ulicznych osób rzeźniczych _wykrzywił_ twarz.* ▶️ *Osoba Naczelnicza ulicznych osób rzeźniczych _wykrzywiła_ twarz.*
+– spelling error of the annotator (the model's solution is better than the 'gold standard'): *Jaka jest pewność, że Pismo Święte po wielu tłumaczeniach oddaje wiernie to, co osoby autorskie _mialy_ na myśli...* ▶️ *Jaka jest pewność, że Pismo Święte po wielu tłumaczeniach oddaje wiernie to, co osoby autorskie _miały_ na myśli...*
 – trailing white space: *Osoba logopedzka diagnozuje i leczy wady wymowy u dzieci i dorosłych. * ▶️ *Osoba logopedzka diagnozuje i leczy wady wymowy u dzieci i dorosłych.*
-– no-break whitespace after one-letter words (removed by the model): *Kto z państwa osób senatorskich jest za przyjęciem poprawek: dwudziestej trzeciej, dwudziestej szóstej, trzydziestej szóstej i czterdziestej, proszę o naciśnięcie przycisku ""za"".* ▶️ *Kto z państwa osób senatorskich jest za przyjęciem poprawek: dwudziestej trzeciej, dwudziestej szóstej, trzydziestej szóstej i czterdziestej, proszę o naciśnięcie przycisku ""za"".*
+– non-breaking whitespace after one-letter words (present due to conventions on trailing short words at the end of a line in printed text; removed by the model): *Kto z państwa osób senatorskich jest za przyjęciem poprawek: dwudziestej trzeciej, dwudziestej szóstej, trzydziestej szóstej i czterdziestej, proszę o naciśnięcie przycisku ""za"".* ▶️ *Kto z państwa osób senatorskich jest za przyjęciem poprawek: dwudziestej trzeciej, dwudziestej szóstej, trzydziestej szóstej i czterdziestej, proszę o naciśnięcie przycisku ""za"".*
 
-6. The most exceptional change is a completely unexpexted application of the rule to a gendered pronoun:
+6. The most exceptional change is a completely unexpected application of the rule to a gendered pronoun (this is outside the scope of the current project, but is a welcome addition; it also bodes well in terms of expanding the scope of the project that the model has already picked up on the gendered character of this word):
 "_Ten, kto dyktuje warunki_, kto powołał osobę narratorską i kto tak długo zostawiał bez odpowiedzi listy i faksy, przypomina sobie co jakiś czas o zaległych sprawach, poczynając od cieknącego kranu, a kończąc na bankowych dyspozycjach."
 "_Osoba, która dyktuje warunki_, kto powołał osobę narraterską i kto tak długo zostawiał bez odpowiedzi listy i faksy, przypomina sobie co jakiś czas o zaległych sprawach, poczynając od cieknącego kranu, a kończąc na bankowych dyspozycjach."
 
@@ -97,11 +97,11 @@ Examples are presentend in the following order: *target prepared by annotators* 
 
 1. Despite our best efforts, there were mistakes in the dataset: the reason for that is the fact that we didn't have enough resources to provide any proofreading. Standard practice would be to have at least two annotators and one superannnotator – in our case, every example was prepared by one annotator without proofreading. Additionally, even though some normalization has been performed at different stages for different subsets of the data, it wasn't consistent enough to ensure adequate conditions for fully reliable metrics based on Levensthein's distance.
 – On one hand, errors present in the training/validation splits may have contributed to worse-than-possible training results (model could come to "wrong conclusions" based on erroneous examples in training),
-– On the second, errors present in the test split have likely caused the output quality to be underreported (there are at least two cases where model was "more right" than the test data target, while it is very unlikely for the annotators to commit an error *exactly* the same as an error later commited by the model for *exactly* the same test example),
-– However, the number of errors is not too big and can be easily remediated by having even one round of proofreading. Proofreading has not been performed before submitting this project, as at this state it would equate to falsifying documentation.
+– On the other hand, errors present in the test split have likely caused the output quality to be worse than it could have been (there are several cases where model was "more correct" than the test data 'gold standard' target; at the same time it is very unlikely for the annotators to commit an error that is *exactly* the same as an error later generated by the model for *exactly* the same test example),
+– However, the number of errors is not too big and can  easily be remedied by having even one round of proofreading. Proofreading has not been performed before submitting this project, as at this stage it would equate to falsifying documentation. However, it is clear that better data quality would lead to much better results, and proofreading is a very important element of quality assurance.
 
 2. The dataset was not balanced the way it was intended to be (in terms of morphological variety of job titles), nor was it as homogenous as intended (there were semantic edge cases present, as well as a variety of cases instead of just singular nominative forms), and some of the examples contained more than one job title.
-– This has made the task all the more complicated for the model, as there are more parameters influencing the quality of the output, such as possible mistakes concetning case endings, number agreement, recognizing edge cases etc.
+– This has made the task all the more complicated for the model, as there are more parameters influencing the quality of the output, such as possible mistakes concerning case endings, number agreement, recognizing edge cases etc.
 
 ## Conclusions
 
@@ -110,17 +110,25 @@ The results are very promising and much better than expected. The relatively hig
 It is advisable to proofread the existing dataset [ArielUW/jobtitles], as well as to expand it with additional examples tailored to adress:
 – the most problematic morphological types of job titles (such as the ones neutralised to: _osoba zajmująca się (...)_),
 – feminine nouns,
-– morphosyntactic inticacies of subject-verb agreement, case and number agreement and co-reference,
+– higher representation of low-frequency items, especially in high-frequency morphosyntactic types, to ensure generalization
+– morphosyntactic intricacies of subject-verb agreement, case and number agreement and co-reference,
 – multiple changes per one sentence.
 
 Finally, the texts in the dataset need to be properly normalised, especially in the test split, to ensure uniformity in terms of:
 – dashes (en vs em),
 – hyphens (breaking vs non-breaking ones),
-– ellipsis (three dots vs single elpisis character),
-– whitespaces (standard vs no-break space),
+– ellipses (three dots vs single elpisis character),
+– whitespaces (standard vs non-breaking space),
 – quotation marks,
 – no trailing whitespaces.
 
-It is worth considering if more than one correct version (if it exist for a particular sentence) should be provided in the test split for a more accurate evaluation.
+It is worth considering if more than one correct version (if it exist for a particular sentence) should be provided in the test split for a more accurate evaluation. With this conditional approach, the higher Levenshtein distance value would be selected 
 
 After that the training process should be repeated from scratch for the base model, as the here presented fine-tuned model was most likely negatively affected by the existence of errors in the dataset.
+
+Furthermore, the project is worth expanding more generally. Here are some possible vectors of further development, in terms of data worth collecting and training on:
+– both shorter and longer inputs (e.g. just the job titles to neutralize instead of sentences, but also multi-sentence texts),
+– representation of person-naming nouns that are not specifically job titles (e.g. *sąsiadka, zwolenniczka, hobbysta, posiadacz, znajoma* etc.)
+– items that are already using gender-neutral personatives, so no changes are needed,
+– items that are using a different gender-neutral strategy (e.g. *pracownik_czka*) that should be changed to personatives, so that texts maintain internal consistency,
+– a conditional logic for only neutralizing nouns related to persons who are non-binary or undefined in terms of gender, while gendering the other people in texts as they wish to be gendered (probably the most ambitious, but also the most desirable for real-life use cases).
